@@ -526,38 +526,6 @@ private: // functions
         }
         
         return std::string(it.first, it.second);
-
-/*        if (std::strspn(it.first, " \t\n\r") ==
-            static_cast<size_t>(it.second - it.first))
-        {
-            return std::string(
-                (!removeSurrSpaces && (it.second - it.first)) ? " " : "");
-        }
-
-        const char* pos = it.first;
-
-        bool next = false;
-        size_t nwBegin = std::strspn(pos, " \t\n\r");
-        std::string s((!removeSurrSpaces && nwBegin > 0) ? " " : "");
-        while (pos + nwBegin < it.second)
-        {
-            size_t nwEnd = std::strcspn(pos + nwBegin, " \t\n\r");
-
-            if(!next)
-                next = true;
-            else
-                s += ' ';
-            
-            s.append(pos + nwBegin, (pos + nwBegin + nwEnd < it.second) ?
-                pos + nwBegin + nwEnd : it.second);
-
-            nwBegin += nwEnd + std::strspn(pos + nwBegin + nwEnd, " \t\n\r");
-        }
-
-        if (!removeSurrSpaces && nwBegin > 0 && isspace(*(it.second-1)))
-            s += ' ';
-
-        return s;*/
     }
 
 private: // data
