@@ -23,6 +23,9 @@ SOFTWARE.
 */
 
 /*
+    @file  ho_sax_ult.hpp
+
+    @description
     This is a part of header-only (see: wiki Header-only) tiny utils library.
 
     ULT for the SAX parser.
@@ -31,7 +34,19 @@ SOFTWARE.
 #ifndef HO_SAX_ULT_HPP_
 #define HO_SAX_ULT_HPP_
 
+//------------------------------------------------------------------------
+// XML SAX ULT. In separate header - Optional - not needed in the project.
+// Comment this/these preprocessor definition(s) out in production code.
+// Make ULT definitions available. See into the code how to use it.
+#define XmlSaxULT_Define
+// Make sense only with XmlSaxULT_Define defined. Define static ULT object
+// that run the tests when program starts - no need to do it manually.
+#define XmlSaxULT_Run
+
+#ifdef XmlSaxULT_Define
+
 #include <iostream>
+#include "ho_sax.hpp"
 
 namespace headeronly
 {
@@ -584,5 +599,7 @@ static const XmlSaxULTAutorun xmlSaxULTAutorun(false, false);
 
 } // xmlsaxult
 } // headeronly
+
+#endif // XmlSaxULT_Define
 
 #endif // HO_SAX_ULT_HPP_

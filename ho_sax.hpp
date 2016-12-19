@@ -23,6 +23,9 @@ SOFTWARE.
 */
 
 /*
+    @file  ho_sax.hpp
+
+    @description
     This is a part of header-only (see: wiki Header-only) tiny utils library.
 
     SAX parser with limitations, suitable for parsing small and simple
@@ -52,10 +55,12 @@ SOFTWARE.
     * error handling during parsing: parser calls visitors 'error()' method,
       and returns false
     * exceptions: the parser's methods do not throw; all exceptions thrown
-      by during parsing by other libraries are absorbed and handled as
-      parse errors
+      by during parsing by other libraries might be absorbed and handled as
+      parse errors, if the HO_SAX_CATCH_EXCEPTIONS macro
+      has been defined; note: the macro will become undefined in the end
+      of the file
 
-    Usage: see ULT (included at the bottom) to figure out what should work
+    Usage: see ho_sax_ult.hpp to figure out what should work
     and how to use the parser.
 
     Requirements: compiler with limited c++11 support (regex, lambdas),
@@ -73,6 +78,8 @@ SOFTWARE.
       - for " " input sometimes regex match 3rd group
       "(\\s+)?(\\S+(?:\\s+\\S+)*)?(\\s+)?"
 */
+
+#define HO_SAX_CATCH_EXCEPTIONS
 
 #ifndef HO_SAX_HPP_
 #define HO_SAX_HPP_
@@ -149,8 +156,9 @@ public: // function members
 
         // Pointer to unparsed remainder.
         const char* docPos = doc;
-
+#ifdef HO_SAX_CATCH_EXCEPTIONS
         try
+#endif // HO_SAX_CATCH_EXCEPTIONS
         {
             static const std::string value =
                 "(?:[^<\"]|(?:&(?:lt|gt|amp|apos|quot);))*";
@@ -336,6 +344,7 @@ public: // function members
                 }
             } while(retCode && !m_nodeStack.empty());
         }
+#ifdef HO_SAX_CATCH_EXCEPTIONS
         catch(const std::exception& e)
         {
             m_visitor.error(
@@ -348,6 +357,7 @@ public: // function members
             m_visitor.error("ERROR: unknown exception", docPos);
             retCode = false;
         }
+#endif // HO_SAX_CATCH_EXCEPTIONS
 
         return retCode;
     }
@@ -559,19 +569,8 @@ private: // data
 };
 } // headeronly
 
-//------------------------------------------------------------------------
-// XML SAX ULT. In separate header - Optional - not needed in the project.
-// Comment this/these preprocessor definition(s) out in production code.
-// Make ULT definitions available. See into the code how to use it.
-#define XmlSaxULT_Define
-// Make sense only with XmlSaxULT_Define defined. Define static ULT object
-// that run the tests when program starts - no need to do it manually.
-#define XmlSaxULT_Run
-
-#ifdef XmlSaxULT_Define
-#undef XmlSaxULT_Define
-#include "ho_sax_ult.hpp"
-#endif // XmlSaxULT_Define
-//------------------------------------------------------------------------
+#ifdef HO_SAX_CATCH_EXCEPTIONS
+#undef HO_SAX_CATCH_EXCEPTIONS
+#endif // HO_SAX_CATCH_EXCEPTIONS
 
 #endif // HO_SAX_HPP_
