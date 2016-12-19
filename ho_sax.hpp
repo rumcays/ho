@@ -79,8 +79,6 @@ SOFTWARE.
       "(\\s+)?(\\S+(?:\\s+\\S+)*)?(\\s+)?"
 */
 
-#define HO_SAX_CATCH_EXCEPTIONS
-
 #ifndef HO_SAX_HPP_
 #define HO_SAX_HPP_
 
